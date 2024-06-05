@@ -37,7 +37,7 @@ class FileAddressSpace:
         self.fname = fname
     self.name = fname
     self.fhandle = open(fname, mode)
-        self.fsize = os.path.getsize(fname)
+    self.fsize = os.path.getsize(fname)
 
     if fast == True:
             self.fast_fhandle = open(fname, mode)

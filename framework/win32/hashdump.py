@@ -235,8 +235,7 @@ def dump_hashes(sysaddr, samaddr):
         lmhash,nthash = get_user_hashes(user,hbootkey)
         if not lmhash: lmhash = empty_lm
         if not nthash: nthash = empty_nt
-        print "%s:%d:%s:%s:::" % (get_user_name(user), int(user.Name,16),
-                            lmhash.encode('hex'), nthash.encode('hex'))
+        sys.stdout.write("%s:%d:%s:%s:::" % (get_user_name(user), int(user.Name,16), lmhash.encode('hex'), nthash.encode('hex')))
 
 def dump_file_hashes(syshive_fname, samhive_fname):
     sysaddr = HiveFileAddressSpace(syshive_fname)
