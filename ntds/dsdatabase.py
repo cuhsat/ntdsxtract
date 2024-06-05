@@ -31,25 +31,26 @@ from lib.sid import *
 from lib.guid import *
 import pickle
 
-dsMapOffsetByLineId   = {} #Map that can be used to find the offset for line
-dsMapLineIdByRecordId = {} #Map that can be used to find the line for record
-dsMapTypeByRecordId   = {} #Map that can be used to find the type for record
-dsMapRecordIdByName   = {} #Map that can be used to find the record for name
-dsMapChildsByRecordId = {} #Map that can be used to find child objects
-dsMapTypeIdByTypeName = {} #Map that can be used to find child objects
-dsMapRecordIdByTypeId = {} #Map that can be used to find all the records that have a type
-dsMapRecordIdBySID    = {} #Map that can be used to find the record for a SID
-dsMapRecordIdByGUID   = {} #Map that can be used to find the record for a GUID
+dsMapOffsetByLineId = {}  # Map that can be used to find the offset for line
+dsMapLineIdByRecordId = {}  # Map that can be used to find the line for record
+dsMapTypeByRecordId = {}  # Map that can be used to find the type for record
+dsMapRecordIdByName = {}  # Map that can be used to find the record for name
+dsMapChildsByRecordId = {}  # Map that can be used to find child objects
+dsMapTypeIdByTypeName = {}  # Map that can be used to find child objects
+dsMapRecordIdByTypeId = {}  # Map that can be used to find all the records that have a type
+dsMapRecordIdBySID = {}  # Map that can be used to find the record for a SID
+dsMapRecordIdByGUID = {}  # Map that can be used to find the record for a GUID
 
 dsSchemaTypeId = -1
 
 dsDatabaseSize = -1
 
+
 def dsInitDatabase(dsESEFile, workdir):
     global dsDatabaseSize
     dsDatabaseSize = stat(dsESEFile).st_size
-    sys.stderr.write("\n[+] Initialising engine...\n")  
-    db = open(dsESEFile , 'rb', 0)
+    sys.stderr.write("\n[+] Initialising engine...\n")
+    db = open(dsESEFile, 'rb', 0)
     db.seek(0)
     line = db.readline()
     if line == "":
@@ -58,10 +59,10 @@ def dsInitDatabase(dsESEFile, workdir):
     else:
         dsFieldNameRecord = line.split('\t')
         record = line.split('\t')
-        for cid in range(0, len(record)-1):
-#------------------------------------------------------------------------------ 
-# filling indexes for object attributes
-#------------------------------------------------------------------------------ 
+        for cid in range(0, len(record) - 1):
+            # ------------------------------------------------------------------------------
+            # filling indexes for object attributes
+            # ------------------------------------------------------------------------------
             if (record[cid] == "DNT_col"):
                 ntds.dsfielddictionary.dsRecordIdIndex = cid
             if (record[cid] == "PDNT_col"):
@@ -90,14 +91,14 @@ def dsInitDatabase(dsESEFile, workdir):
                 ntds.dsfielddictionary.dsObjectColIndex = cid
             if (record[cid] == "ATTi131120"):
                 ntds.dsfielddictionary.dsIsDeletedIndex = cid
-#------------------------------------------------------------------------------ 
-# Filling indexes for deleted object attributes
-#------------------------------------------------------------------------------ 
+            # ------------------------------------------------------------------------------
+            # Filling indexes for deleted object attributes
+            # ------------------------------------------------------------------------------
             if (record[cid] == "ATTb590605"):
                 ntds.dsfielddictionary.dsOrigContainerIdIndex = cid
-#------------------------------------------------------------------------------ 
-# Filling indexes for account object attributes
-#------------------------------------------------------------------------------ 
+            # ------------------------------------------------------------------------------
+            # Filling indexes for account object attributes
+            # ------------------------------------------------------------------------------
             if (record[cid] == "ATTr589970"):
                 ntds.dsfielddictionary.dsSIDIndex = cid
             if (record[cid] == "ATTm590045"):
@@ -124,7 +125,7 @@ def dsInitDatabase(dsESEFile, workdir):
                 ntds.dsfielddictionary.dsBadPwdCountIndex = cid
             if (record[cid] == "ATTj589922"):
                 ntds.dsfielddictionary.dsPrimaryGroupIdIndex = cid
-            if (record[cid] == "ATTk589914"):    
+            if (record[cid] == "ATTk589914"):
                 ntds.dsfielddictionary.dsNTHashIndex = cid
             if (record[cid] == "ATTk589879"):
                 ntds.dsfielddictionary.dsLMHashIndex = cid
@@ -138,9 +139,9 @@ def dsInitDatabase(dsESEFile, workdir):
                 ntds.dsfielddictionary.dsADUserObjectsIndex = cid
             if (record[cid] == "ATTk589949"):
                 ntds.dsfielddictionary.dsSupplementalCredentialsIndex = cid
-#------------------------------------------------------------------------------
-# Filling indexes for computer objects attributes
-#------------------------------------------------------------------------------
+            # ------------------------------------------------------------------------------
+            # Filling indexes for computer objects attributes
+            # ------------------------------------------------------------------------------
             if (record[cid] == "ATTj589993"):
                 ntds.dsfielddictionary.dsLogonCountIndex = cid
             if (record[cid] == "ATTm590443"):
@@ -149,9 +150,9 @@ def dsInitDatabase(dsESEFile, workdir):
                 ntds.dsfielddictionary.dsOSNameIndex = cid
             if (record[cid] == "ATTm590188"):
                 ntds.dsfielddictionary.dsOSVersionIndex = cid
-#------------------------------------------------------------------------------ 
-# Filling indexes for bitlocker objects
-#------------------------------------------------------------------------------ 
+            # ------------------------------------------------------------------------------
+            # Filling indexes for bitlocker objects
+            # ------------------------------------------------------------------------------
             if (record[cid] == "ATTm591788"):
                 ntds.dsfielddictionary.dsRecoveryPasswordIndex = cid
             if (record[cid] == "ATTk591823"):
@@ -160,19 +161,20 @@ def dsInitDatabase(dsESEFile, workdir):
                 ntds.dsfielddictionary.dsVolumeGUIDIndex = cid
             if (record[cid] == "ATTk591789"):
                 ntds.dsfielddictionary.dsRecoveryGUIDIndex = cid
-#------------------------------------------------------------------------------ 
-# Filling indexes for bitlocker objects
-#------------------------------------------------------------------------------ 
+            # ------------------------------------------------------------------------------
+            # Filling indexes for bitlocker objects
+            # ------------------------------------------------------------------------------
             if (record[cid] == "ATTi590943"):
                 ntds.dsfielddictionary.dsDialInAccessPermission = cid
-#===============================================================================
-# Filling indexes for AD encryption
-#===============================================================================
+            # ===============================================================================
+            # Filling indexes for AD encryption
+            # ===============================================================================
             if (record[cid] == "ATTk590689"):
                 ntds.dsfielddictionary.dsPEKIndex = cid
     db.seek(0)
     dsCheckMaps(db, workdir)
     return db
+
 
 def dsCheckMaps(dsDatabase, workdir):
     try:
@@ -196,19 +198,19 @@ def dsCheckMaps(dsDatabase, workdir):
         dsLoadMap(path.join(workdir, "ridsid.map"), dsMapRecordIdBySID)
         dsLoadMap(path.join(workdir, "ridguid.map"), dsMapRecordIdByGUID)
         dsLoadMap(path.join(workdir, "ridtype.map"), dsMapRecordIdByTypeId)
-        
+
         pek = open(path.join(workdir, "pek.map"), "rb")
         ntds.dsfielddictionary.dsEncryptedPEK = pek.read()
         pek.close()
-        
+
     except Exception as e:
         sys.stderr.write("[!] Warning: Opening saved maps failed: " + str(e) + "\n")
         sys.stderr.write("[+] Rebuilding maps...\n")
         dsBuildMaps(dsDatabase, workdir)
         pass
 
+
 def dsBuildMaps(dsDatabase, workdir):
-    
     global dsMapOffsetByLineId
     global dsMapLineIdByRecordId
     global dsMapRecordIdByName
@@ -217,13 +219,13 @@ def dsBuildMaps(dsDatabase, workdir):
     global dsMapRecordIdBySID
     global dsMapRecordIdbyGUID
     global dsSchemaTypeId
-        
+
     lineid = 0
     while True:
         sys.stderr.write("\r[+] Scanning database - %d%% -> %d records processed" % (
-                                            dsDatabase.tell()*100/dsDatabaseSize,
-                                            lineid+1
-                                            ))
+            dsDatabase.tell() * 100 / dsDatabaseSize,
+            lineid + 1
+        ))
         sys.stderr.flush()
         try:
             dsMapOffsetByLineId[lineid] = dsDatabase.tell()
@@ -235,22 +237,22 @@ def dsBuildMaps(dsDatabase, workdir):
             break
         record = line.split('\t')
         if lineid != 0:
-            #===================================================================
+            # ===================================================================
             # This record will always be the record representing the domain
             # object
             # This should be the only record containing the PEK
-            #===================================================================
+            # ===================================================================
             if record[ntds.dsfielddictionary.dsPEKIndex] != "":
                 if ntds.dsfielddictionary.dsEncryptedPEK != "":
                     sys.stderr.write("\n[!] Warning! Multiple records with PEK entry!\n")
                 ntds.dsfielddictionary.dsEncryptedPEK = record[ntds.dsfielddictionary.dsPEKIndex]
-                
+
             try:
                 dsMapLineIdByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])] = lineid
             except:
                 sys.stderr.write("\n[!] Warning! Error at dsMapLineIdByRecordId!\n")
                 pass
-            
+
             try:
                 tmp = dsMapRecordIdByName[record[ntds.dsfielddictionary.dsObjectName2Index]]
                 # Also save the Schema type id for future use
@@ -258,91 +260,102 @@ def dsBuildMaps(dsDatabase, workdir):
                     if dsSchemaTypeId == -1 and record[ntds.dsfielddictionary.dsObjectTypeIdIndex] != "":
                         dsSchemaTypeId = int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])
                     else:
-                        sys.stderr.write("\n[!] Warning! There is more than one Schema object! The DB is inconsistent!\n")
+                        sys.stderr.write(
+                            "\n[!] Warning! There is more than one Schema object! The DB is inconsistent!\n")
             except:
-                dsMapRecordIdByName[record[ntds.dsfielddictionary.dsObjectName2Index]] = int(record[ntds.dsfielddictionary.dsRecordIdIndex])
+                dsMapRecordIdByName[record[ntds.dsfielddictionary.dsObjectName2Index]] = int(
+                    record[ntds.dsfielddictionary.dsRecordIdIndex])
                 if record[ntds.dsfielddictionary.dsObjectName2Index] == "Schema":
                     if dsSchemaTypeId == -1 and record[ntds.dsfielddictionary.dsObjectTypeIdIndex] != "":
                         dsSchemaTypeId = int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])
                     else:
-                        sys.stderr.write("\n[!] Warning! There is more than one Schema object! The DB is inconsistent!\n")
+                        sys.stderr.write(
+                            "\n[!] Warning! There is more than one Schema object! The DB is inconsistent!\n")
                 pass
-            
+
             try:
-                dsMapTypeByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])] = record[ntds.dsfielddictionary.dsObjectTypeIdIndex]
+                dsMapTypeByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])] = record[
+                    ntds.dsfielddictionary.dsObjectTypeIdIndex]
             except:
                 sys.stderr.write("\n[!] Warning! Error at dsMapTypeByRecordId!\n")
                 pass
-            
+
             try:
                 tmp = dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])]
             except KeyError:
                 dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])] = []
                 pass
-            
+
             try:
-                dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsParentRecordIdIndex])].append(int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
+                dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsParentRecordIdIndex])].append(
+                    int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
             except KeyError:
                 dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsParentRecordIdIndex])] = []
-                dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsParentRecordIdIndex])].append(int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
-            
+                dsMapChildsByRecordId[int(record[ntds.dsfielddictionary.dsParentRecordIdIndex])].append(
+                    int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
+
             try:
                 dsMapRecordIdBySID[str(SID(record[ntds.dsfielddictionary.dsSIDIndex]))]
             except KeyError:
-            	dsMapRecordIdBySID[str(SID(record[ntds.dsfielddictionary.dsSIDIndex]))] = int(record[ntds.dsfielddictionary.dsRecordIdIndex])
-            
+                dsMapRecordIdBySID[str(SID(record[ntds.dsfielddictionary.dsSIDIndex]))] = int(
+                    record[ntds.dsfielddictionary.dsRecordIdIndex])
+
             try:
                 dsMapRecordIdByGUID[str(GUID(record[ntds.dsfielddictionary.dsObjectGUIDIndex]))]
             except KeyError:
-            	dsMapRecordIdByGUID[str(GUID(record[ntds.dsfielddictionary.dsObjectGUIDIndex]))] = int(record[ntds.dsfielddictionary.dsRecordIdIndex])
-            
+                dsMapRecordIdByGUID[str(GUID(record[ntds.dsfielddictionary.dsObjectGUIDIndex]))] = int(
+                    record[ntds.dsfielddictionary.dsRecordIdIndex])
+
             try:
-            	if record[ntds.dsfielddictionary.dsObjectTypeIdIndex] != "":
-                	dsMapRecordIdByTypeId[int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])].append(int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
+                if record[ntds.dsfielddictionary.dsObjectTypeIdIndex] != "":
+                    dsMapRecordIdByTypeId[int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])].append(
+                        int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
             except KeyError:
-            	dsMapRecordIdByTypeId[int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])] = []
-            	dsMapRecordIdByTypeId[int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])].append(int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
-                
+                dsMapRecordIdByTypeId[int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])] = []
+                dsMapRecordIdByTypeId[int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])].append(
+                    int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
+
         lineid += 1
     sys.stderr.write("\n")
-    
+
     offlid = open(path.join(workdir, "offlid.map"), "wb")
     pickle.dump(dsMapOffsetByLineId, offlid)
     offlid.close()
-    
+
     lidrid = open(path.join(workdir, "lidrid.map"), "wb")
     pickle.dump(dsMapLineIdByRecordId, lidrid)
     lidrid.close()
-    
+
     ridname = open(path.join(workdir, "ridname.map"), "wb")
     pickle.dump(dsMapRecordIdByName, ridname)
     ridname.close()
-    
+
     typerid = open(path.join(workdir, "typerid.map"), "wb")
     pickle.dump(dsMapTypeByRecordId, typerid)
     typerid.close()
-    
+
     childsrid = open(path.join(workdir, "childsrid.map"), "wb")
     pickle.dump(dsMapChildsByRecordId, childsrid)
     childsrid.close()
-    
+
     pek = open(path.join(workdir, "pek.map"), "wb")
     pek.write(ntds.dsfielddictionary.dsEncryptedPEK)
     pek.close()
-    
+
     ridsid = open(path.join(workdir, "ridsid.map"), "wb")
     pickle.dump(dsMapRecordIdBySID, ridsid)
     ridsid.close()
-    
+
     ridguid = open(path.join(workdir, "ridguid.map"), "wb")
     pickle.dump(dsMapRecordIdByGUID, ridguid)
     ridguid.close()
-    
+
     ridtype = open(path.join(workdir, "ridtype.map"), "wb")
     pickle.dump(dsMapRecordIdByTypeId, ridtype)
     ridtype.close()
-    
+
     dsBuildTypeMap(dsDatabase, workdir)
+
 
 def dsBuildTypeMap(dsDatabase, workdir):
     global dsMapTypeIdByTypeName
@@ -350,34 +363,34 @@ def dsBuildTypeMap(dsDatabase, workdir):
     global dsMapChildsByRecordId
     global dsSchemaTypeId
 
-    schemarecid  = -1
-    
+    schemarecid = -1
+
     sys.stderr.write("[+] Sanity checks...\n")
-    
+
     if dsSchemaTypeId == -1:
-    	sys.stderr.write("[!] Error! The Schema object's type id cannot be found! The DB is inconsistent!\n")
-    	sys.exit(1)
+        sys.stderr.write("[!] Error! The Schema object's type id cannot be found! The DB is inconsistent!\n")
+        sys.exit(1)
     elif len(dsMapRecordIdByTypeId[dsSchemaTypeId]) > 1:
-    	sys.stderr.write("[!] Warning! There are more than 1 schema objects! The DB is inconsistent!\n")
-    	sys.stderr.write("      Schema record ids: " + str(dsMapRecordIdByTypeId[dsSchemaTypeId]) + "\n")
-    	sys.stderr.write("      Please select the schema id you would like to use!\n")
-    	tmp = raw_input()
-    	while True:
-    	    try:
-    	        if int(tmp) in dsMapRecordIdByTypeId[dsSchemaTypeId]:
+        sys.stderr.write("[!] Warning! There are more than 1 schema objects! The DB is inconsistent!\n")
+        sys.stderr.write("      Schema record ids: " + str(dsMapRecordIdByTypeId[dsSchemaTypeId]) + "\n")
+        sys.stderr.write("      Please select the schema id you would like to use!\n")
+        tmp = raw_input()
+        while True:
+            try:
+                if int(tmp) in dsMapRecordIdByTypeId[dsSchemaTypeId]:
                     schemarecid = int(tmp)
                     break
                 else:
-                	sys.stderr.write("      Please enter a number that is in the list of ids!\n")
-                	tmp = raw_input()
+                    sys.stderr.write("      Please enter a number that is in the list of ids!\n")
+                    tmp = raw_input()
             except:
-            	sys.stderr.write("      Please enter a number!\n")
-            	tmp = raw_input()
+                sys.stderr.write("      Please enter a number!\n")
+                tmp = raw_input()
     elif len(dsMapRecordIdByTypeId[dsSchemaTypeId]) == 0:
-    	sys.stderr.write("[!] Warning! There is no schema object! The DB is inconsistent!\n")
+        sys.stderr.write("[!] Warning! There is no schema object! The DB is inconsistent!\n")
     else:
-    	schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][0]
-    
+        schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][0]
+
     sys.stderr.write("      Schema record id: %d\n" % schemarecid)
     sys.stderr.write("      Schema type id: %d\n" % int(dsMapTypeByRecordId[schemarecid]))
     sys.stderr.flush()
@@ -387,14 +400,14 @@ def dsBuildTypeMap(dsDatabase, workdir):
     l = len(schemachilds)
     for child in schemachilds:
         sys.stderr.write("\r[+] Extracting schema information - %d%% -> %d records processed" % (
-                                            i*100/l,
-                                            i+1
-                                            ))
+            i * 100 / l,
+            i + 1
+        ))
         sys.stderr.flush()
         lineid = int(dsMapLineIdByRecordId[int(child)])
         offset = int(dsMapOffsetByLineId[int(lineid)])
         dsDatabase.seek(offset)
-        
+
         record = ""
         line = ""
         line = dsDatabase.readline()
@@ -403,19 +416,20 @@ def dsBuildTypeMap(dsDatabase, workdir):
             name = record[ntds.dsfielddictionary.dsObjectName2Index]
             dsMapTypeIdByTypeName[name] = child
         i += 1
-    
+
     typeidname = open(path.join(workdir, "typeidname.map"), "wb")
     pickle.dump(dsMapTypeIdByTypeName, typeidname)
     typeidname.close()
-    
+
     sys.stderr.write("\r[+] Extracting schema information - %d%% -> %d records processed" % (
-                                            100,
-                                            i
-                                            ))
+        100,
+        i
+    ))
     sys.stderr.write("\n")
     sys.stderr.flush()
+
 
 def dsInitEncryption(syshive_fname):
     bootkey = get_syskey(syshive_fname)
     enc_pek = unhexlify(ntds.dsfielddictionary.dsEncryptedPEK[16:])
-    ntds.dsfielddictionary.dsPEK=dsDecryptPEK(bootkey, enc_pek)
+    ntds.dsfielddictionary.dsPEK = dsDecryptPEK(bootkey, enc_pek)

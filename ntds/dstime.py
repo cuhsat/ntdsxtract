@@ -23,22 +23,26 @@ import time
 import calendar
 from struct import *
 
-class dsUTC(datetime.tzinfo):
-	def utcoffset(self, dt):
-		return datetime.timedelta(hours=0)
-	def dst(self, dt):
-		return datetime.timedelta(0)
-	def tzname(self,dt):
-		return "UTC"
 
-tzinfoUTC=dsUTC()
+class dsUTC(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(hours=0)
+
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+    def tzname(self, dt):
+        return "UTC"
+
+
+tzinfoUTC = dsUTC()
 _FILETIME_null_date = datetime.datetime(1601, 1, 1, 0, 0, 0, tzinfo=tzinfoUTC)
 _DBTIME_null_date = datetime.datetime(1900, 1, 1, 0, 0, 0, tzinfo=tzinfoUTC)
 
-#_FILETIME_null_date = datetime.datetime(1601, 1, 1, 0, 0, 0)
 
-#_DBTIME_null_date = datetime.datetime(1900, 1, 1, 0, 0, 0)
+# _FILETIME_null_date = datetime.datetime(1601, 1, 1, 0, 0, 0)
 
+# _DBTIME_null_date = datetime.datetime(1900, 1, 1, 0, 0, 0)
 
 
 def dsVerifyDSTime(dsTime):
@@ -49,30 +53,34 @@ def dsVerifyDSTime(dsTime):
         return -1
     else:
         return int(dsTime)
-    
+
+
 def dsVerifyDSTimeStamp(dsTimeStamp):
     if dsTimeStamp == "":
         return -1
     elif (int(dsTimeStamp) < 120000000000000000 or
-        #int(dsTimeStamp) >= 9223372036854775807 or
-        int(dsTimeStamp) >= 2650467743999999999 or
-        int(dsTimeStamp) == 0 or
-        int(dsTimeStamp) == -1):
+          # int(dsTimeStamp) >= 9223372036854775807 or
+          int(dsTimeStamp) >= 2650467743999999999 or
+          int(dsTimeStamp) == 0 or
+          int(dsTimeStamp) == -1):
         return -1
     else:
         return int(dsTimeStamp)
+
 
 def dsConvertToDSTimeStamp(dsTime):
     if dsVerifyDSTime(dsTime) != -1:
         return int(dsTime) * 10000000
     else:
         return -1
-        
+
+
 def dsGetDSDateTime(dsTimeStamp):
     if dsVerifyDSTimeStamp(dsTimeStamp) == -1:
         return "Never"
     else:
         return _FILETIME_null_date + datetime.timedelta(microseconds=int(dsTimeStamp) / 10)
+
 
 def dsGetDSTimeStampStr(dsTimeStamp):
     if dsVerifyDSTimeStamp(dsTimeStamp) == -1:
@@ -80,9 +88,10 @@ def dsGetDSTimeStampStr(dsTimeStamp):
     else:
         return str(_FILETIME_null_date + datetime.timedelta(microseconds=int(dsTimeStamp) / 10))
 
+
 def dsGetPOSIXTimeStamp(dsTimeStamp):
     ts = 0
-    if  dsVerifyDSTimeStamp(dsTimeStamp) == -1:
+    if dsVerifyDSTimeStamp(dsTimeStamp) == -1:
         return 0
     else:
         try:
@@ -90,7 +99,8 @@ def dsGetPOSIXTimeStamp(dsTimeStamp):
         except ValueError:
             ts = int(calendar.timegm(dsGetDSDateTime(dsTimeStamp).timetuple()))
     return ts
-    
+
+
 # def dsGetPOSIXTimeStamp(dsTimeStamp):
 #     ts = 0
 #     if  dsVerifyDSTimeStamp(dsTimeStamp) == -1:
@@ -107,6 +117,7 @@ def dsGetDBLogTimeStampStr(dsDBLogTimeStamp):
         return ""
     (secs, mins, hours, days, months, years) = unpack('BBBBBBxx', dsDBLogTimeStamp)
     return (1900 + years, months, days, hours, mins, secs)
+
 
 def dsGetDBTimeStampStr(dsDBTimeStamp):
     if len(dsDBTimeStamp) < 8:
