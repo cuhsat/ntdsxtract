@@ -29,15 +29,15 @@ from ntds.lib.dump import *
 import time
 
 if len(sys.argv) < 2:
-    sys.stderr.write("\nDSFileInformation v" + str(ntds.version.version))
-    sys.stderr.write("\nExtracts information related to the NTDS.DIT database file")
-    sys.stderr.write("\n\nusage: %s <ntds.dit>\n" % sys.argv[0])
-    sys.stderr.write("\n\n  options:")
-    sys.stderr.write("\n    --debug")
-    sys.stderr.write("\n          Turn on detailed error messages and stack trace")
+    print("\nDSFileInformation v" + str(ntds.version.version))
+    print("\nExtracts information related to the NTDS.DIT database file")
+    print("\n\nusage: %s <ntds.dit>\n" % sys.argv[0])
+    print("\n\n  options:")
+    print("\n    --debug")
+    print("\n          Turn on detailed error messages and stack trace")
     sys.exit(1)
 
-sys.stderr.write("\n[+] Started at: %s" % time.strftime(
+print("\n[+] Started at: %s" % time.strftime(
                                         "%a, %d %b %Y %H:%M:%S UTC",
                                         time.gmtime()))
 
@@ -50,26 +50,26 @@ header = f.read(8192)
 (wbuildnumber, ) = unpack('I', header[224:228])
 (wservicepack, ) = unpack('I', header[228:232])
 
-sys.stdout.write("Header checksum:     %s" % header[:4][::-1].hex())
-sys.stdout.write("Signature:           %s" % header[4:8][::-1].hex())
-sys.stdout.write("File format version: %s" % header[8:12][::-1].hex())
-sys.stdout.write("File type:           %s" % header[12:16][::-1].hex())
-sys.stdout.write("Page size:           %d bytes" % pagesize)
-sys.stdout.write("DB time:             %s" % header[16:24][::-1].hex())
-sys.stdout.write("Windows version:     %d.%d (%d) Service pack %d" % (
+print("Header checksum:     %s" % header[:4][::-1].hex())
+print("Signature:           %s" % header[4:8][::-1].hex())
+print("File format version: %s" % header[8:12][::-1].hex())
+print("File type:           %s" % header[12:16][::-1].hex())
+print("Page size:           %d bytes" % pagesize)
+print("DB time:             %s" % header[16:24][::-1].hex())
+print("Windows version:     %d.%d (%d) Service pack %d" % (
                                                        wmajorversion,
                                                        wminorversion,
                                                        wbuildnumber,
                                                        wservicepack
                                                        ))
-sys.stdout.write("Creation time: %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[24:52][4:12]))
-sys.stdout.write("Attach time:   %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[72:80]))
+print("Creation time: %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[24:52][4:12]))
+print("Attach time:   %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[72:80]))
 if unpack("B", header[88:96][:1]) == (0, ):
-    sys.stdout.write("Detach time:   database is in dirty state")
+    print("Detach time:   database is in dirty state")
 else:
-    sys.stdout.write("Detach time:   %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[88:96]))
-sys.stdout.write("Consistent time: %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[64:72]))
-sys.stdout.write("Recovery time:   %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[244:252]))
-sys.stdout.write("Header dump (first 672 bytes):")
-sys.stdout.write(dump(header[:672], 16, 4))
+    print("Detach time:   %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[88:96]))
+print("Consistent time: %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[64:72]))
+print("Recovery time:   %04d.%02d.%02d %02d:%02d:%02d" % dsGetDBLogTimeStampStr(header[244:252]))
+print("Header dump (first 672 bytes):")
+print(dump(header[:672], 16, 4))
 f.close()

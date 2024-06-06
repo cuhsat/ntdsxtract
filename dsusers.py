@@ -35,67 +35,66 @@ from ntds.lib.hashoutput import *
 from ntds.lib.csvoutput import *
 
 def usage():
-    sys.stderr.write("\nDSUsers v" + str(ntds.version.version))
-    sys.stderr.write("\nExtracts information related to user objects")
-    sys.stderr.write("\n\nusage: %s <datatable> <linktable> <work directory> [option]" % sys.argv[0])
-    sys.stderr.write("\n\n  datatable")
-    sys.stderr.write("\n    The path to the file called datatable extracted by esedbexport")
-    sys.stderr.write("\n  linktable")
-    sys.stderr.write("\n    The path to the file called linktable extracted by esedbexport")
-    sys.stderr.write("\n  work directory")
-    sys.stderr.write("\n    The path to the directory where ntdsxtract should store its")
-    sys.stderr.write("\n    cache files and output files. If the directory does not exist")
-    sys.stderr.write("\n    it will be created.")
-    sys.stderr.write("\n\n  options:")
-    sys.stderr.write("\n    --sid <user sid>")
-    sys.stderr.write("\n          List user identified by SID")
-    sys.stderr.write("\n    --guid <user guid>")
-    sys.stderr.write("\n          List user identified by GUID")
-    sys.stderr.write("\n    --name <user name regexp>")
-    sys.stderr.write("\n          List user identified by the regular expression")
-    sys.stderr.write("\n    --active")
-    sys.stderr.write("\n          List only active accounts. This option cannot be used")
-    sys.stderr.write("\n          with --flags.")
-    sys.stderr.write("\n    --locked")
-    sys.stderr.write("\n          List only locked accounts. This option cannot be used")
-    sys.stderr.write("\n          with --flags.")
-    sys.stderr.write("\n    --uac <UserAccountControl flag combination as hex>")
-    sys.stderr.write("\n          List only the accounts that have the specified UAC flag")
-    sys.stderr.write("\n          combination. This option cannot be used with --active or")
-    sys.stderr.write("\n          --locked")
-    sys.stderr.write("\n    --syshive <path to system hive>")
-    sys.stderr.write("\n          Required for password hash and history extraction")
-    sys.stderr.write("\n          This option should be specified before the password hash")
-    sys.stderr.write("\n          and password history extraction options!")
-    sys.stderr.write("\n    --lmoutfile <name of the LM hash output file>")
-    sys.stderr.write("\n    --ntoutfile <name of the NT hash output file>")
-    sys.stderr.write("\n    --pwdformat <format of the hash output>")
-    sys.stderr.write("\n          ophc - OphCrack format")
-    sys.stderr.write("\n                 When this format is specified the NT output file will be used")
-    sys.stderr.write("\n          john - John The Ripper format")
-    sys.stderr.write("\n          ocl  - oclHashcat format")
-    sys.stderr.write("\n                 When this format is specified the NT output file will be used")
-    sys.stderr.write("\n    --passwordhashes")
-    sys.stderr.write("\n          Extract password hashes")
-    sys.stderr.write("\n    --passwordhistory")
-    sys.stderr.write("\n          Extract password history")
-    sys.stderr.write("\n    --certificates")
-    sys.stderr.write("\n          Extract certificates")
-    sys.stderr.write("\n    --supplcreds")
-    sys.stderr.write("\n          Extract supplemental credentials (e.g.: clear text passwords,")
-    sys.stderr.write("\n          kerberos keys)")
-    sys.stderr.write("\n    --membership")
-    sys.stderr.write("\n          List groups of which the user is a member")
-    sys.stderr.write("\n    --csvoutfile <name of the CSV output file>")
-    sys.stderr.write("\n          The filename of the csv file to which ntdsxtract should write the")
-    sys.stderr.write("\n          output")
-    sys.stderr.write("\n    --debug")
-    sys.stderr.write("\n          Turn on detailed error messages and stack trace")
-    sys.stderr.write("\n")
+    print("\nDSUsers v" + str(ntds.version.version))
+    print("\nExtracts information related to user objects")
+    print("\n\nusage: %s <datatable> <linktable> <work directory> [option]" % sys.argv[0])
+    print("\n\n  datatable")
+    print("\n    The path to the file called datatable extracted by esedbexport")
+    print("\n  linktable")
+    print("\n    The path to the file called linktable extracted by esedbexport")
+    print("\n  work directory")
+    print("\n    The path to the directory where ntdsxtract should store its")
+    print("\n    cache files and output files. If the directory does not exist")
+    print("\n    it will be created.")
+    print("\n\n  options:")
+    print("\n    --sid <user sid>")
+    print("\n          List user identified by SID")
+    print("\n    --guid <user guid>")
+    print("\n          List user identified by GUID")
+    print("\n    --name <user name regexp>")
+    print("\n          List user identified by the regular expression")
+    print("\n    --active")
+    print("\n          List only active accounts. This option cannot be used")
+    print("\n          with --flags.")
+    print("\n    --locked")
+    print("\n          List only locked accounts. This option cannot be used")
+    print("\n          with --flags.")
+    print("\n    --uac <UserAccountControl flag combination as hex>")
+    print("\n          List only the accounts that have the specified UAC flag")
+    print("\n          combination. This option cannot be used with --active or")
+    print("\n          --locked")
+    print("\n    --syshive <path to system hive>")
+    print("\n          Required for password hash and history extraction")
+    print("\n          This option should be specified before the password hash")
+    print("\n          and password history extraction options!")
+    print("\n    --lmoutfile <name of the LM hash output file>")
+    print("\n    --ntoutfile <name of the NT hash output file>")
+    print("\n    --pwdformat <format of the hash output>")
+    print("\n          ophc - OphCrack format")
+    print("\n                 When this format is specified the NT output file will be used")
+    print("\n          john - John The Ripper format")
+    print("\n          ocl  - oclHashcat format")
+    print("\n                 When this format is specified the NT output file will be used")
+    print("\n    --passwordhashes")
+    print("\n          Extract password hashes")
+    print("\n    --passwordhistory")
+    print("\n          Extract password history")
+    print("\n    --certificates")
+    print("\n          Extract certificates")
+    print("\n    --supplcreds")
+    print("\n          Extract supplemental credentials (e.g.: clear text passwords,")
+    print("\n          kerberos keys)")
+    print("\n    --membership")
+    print("\n          List groups of which the user is a member")
+    print("\n    --csvoutfile <name of the CSV output file>")
+    print("\n          The filename of the csv file to which ntdsxtract should write the")
+    print("\n          output")
+    print("\n    --debug")
+    print("\n          Turn on detailed error messages and stack trace")
+    print("\n")
     
 def processUser(user):
-    sys.stdout.write(str(user))
-    sys.stdout.flush()
+    print(str(user))
 
     str_anc = ""
     str_uac = ""
@@ -116,33 +115,33 @@ def processUser(user):
                ])
 
     if pwdump == True:
-        sys.stdout.write("\nPassword hashes:")
+        print("\nPassword hashes:")
         (lm, nt) = user.getPasswordHashes()
         if nt != '':
             if pwdformat == 'john':
-                sys.stdout.write("\n\t" + format_john(user.SAMAccountName,str(user.SID),nt,'NT'))
+                print("\n\t" + format_john(user.SAMAccountName,str(user.SID),nt,'NT'))
                 ntof.writelines(format_john(user.SAMAccountName, str(user.SID), nt, 'NT') + "\n")
             if lm != '':
                 if pwdformat == 'john':
-                    sys.stdout.write("\n\t" + format_john(user.SAMAccountName,str(user.SID),lm,'LM'))
+                    print("\n\t" + format_john(user.SAMAccountName,str(user.SID),lm,'LM'))
                     lmof.writelines(format_john(user.SAMAccountName, str(user.SID), lm, 'LM') + "\n")
                 if pwdformat == 'ocl':
-                    sys.stdout.write("\n\t" + format_ocl(user.SAMAccountName, lm))
+                    print("\n\t" + format_ocl(user.SAMAccountName, lm))
                     lmof.writelines(format_ocl(user.SAMAccountName, lm) + "\n")
             if pwdformat == 'ophc':
                 if lm != '':
-                    sys.stdout.write("\n\t" + format_ophc(user.SAMAccountName,str(user.SID),lm,nt))
+                    print("\n\t" + format_ophc(user.SAMAccountName,str(user.SID),lm,nt))
                     ntof.writelines(format_ophc(user.SAMAccountName, str(user.SID), lm, nt) + "\n")
                 else:
-                    sys.stdout.write("\n\t" + format_ophc(user.SAMAccountName,str(user.SID),"",nt))
+                    print("\n\t" + format_ophc(user.SAMAccountName,str(user.SID),"",nt))
                     ntof.writelines(format_ophc(user.SAMAccountName, str(user.SID), "", nt) + "\n")
             if pwdformat == 'ocl':
-                sys.stdout.write("\n\t" + format_ocl(user.SAMAccountName, nt))
+                print("\n\t" + format_ocl(user.SAMAccountName, nt))
                 ntof.writelines(format_ocl(user.SAMAccountName, nt) + "\n")
                 
     
     if pwhdump == True:
-        sys.stdout.write("\nPassword history:")
+        print("\nPassword history:")
         lmhistory = None
         nthistory = None
         (lmhistory, nthistory) = user.getPasswordHistory()
@@ -150,47 +149,47 @@ def processUser(user):
             if pwdformat == 'john':
                 hashid = 0
                 for nthash in nthistory:
-                    sys.stdout.write("\n\t" + format_john(user.SAMAccountName + "_nthistory" + str(hashid), str(user.SID), nthash, 'NT'))
+                    print("\n\t" + format_john(user.SAMAccountName + "_nthistory" + str(hashid), str(user.SID), nthash, 'NT'))
                     ntof.writelines(format_john(user.SAMAccountName + "_nthistory" + str(hashid), str(user.SID), nthash, 'NT') + "\n")
                     hashid += 1
                 if lmhistory != None:
                     hashid = 0
                     for lmhash in lmhistory:
-                        sys.stdout.write("\n\t" + format_john(user.SAMAccountName + "_lmhistory" + str(hashid), str(user.SID), lmhash, 'LM'))
+                        print("\n\t" + format_john(user.SAMAccountName + "_lmhistory" + str(hashid), str(user.SID), lmhash, 'LM'))
                         lmof.writelines(format_john(user.SAMAccountName + "_lmhistory" + str(hashid), str(user.SID), lmhash, 'LM') + "\n")
                         hashid += 1
             if pwdformat == 'ocl':
                 hashid = 0
                 for nthash in nthistory:
-                    sys.stdout.write("\n\t" + format_ocl(user.SAMAccountName + "_nthistory" + str(hashid), nthash))
+                    print("\n\t" + format_ocl(user.SAMAccountName + "_nthistory" + str(hashid), nthash))
                     ntof.writelines(format_ocl(user.SAMAccountName + "_nthistory" + str(hashid), nthash) + "\n")
                     hashid += 1
                 if lmhistory != None:
                     hashid = 0
                     for lmhash in lmhistory:
-                        sys.stdout.write("\n\t" + format_ocl(user.SAMAccountName + "_lmhistory" + str(hashid), lmhash))
+                        print("\n\t" + format_ocl(user.SAMAccountName + "_lmhistory" + str(hashid), lmhash))
                         lmof.writelines(format_ocl(user.SAMAccountName + "_lmhistory" + str(hashid), lmhash) + "\n")
                         hashid += 1
             if pwdformat == 'ophc':
                 if lmhistory != None:
                     for hashid in range(0,len(nthistory) - 1):
-                        sys.stdout.write("\n\t" + format_ophc(user.SAMAccountName + "_history" + str(hashid), str(user.SID), lmhistory[hashid], nthistory[hashid]))
+                        print("\n\t" + format_ophc(user.SAMAccountName + "_history" + str(hashid), str(user.SID), lmhistory[hashid], nthistory[hashid]))
                         ntof.writelines(format_ophc(user.SAMAccountName + "_history" + str(hashid), str(user.SID), lmhistory[hashid], nthistory[hashid]) + "\n")                        
 
     
     if certdump == True and user.Certificate != "":
-        sys.stdout.write("\nCertificate:\n")
-        sys.stdout.write(dump(user.Certificate,16,16))
+        print("\nCertificate:\n")
+        print(dump(user.Certificate,16,16))
         
     if suppcreddump == True:
         creds = None
         creds = user.getSupplementalCredentials()
         if creds != None:
-            sys.stdout.write("\nSupplemental credentials:\n")
+            print("\nSupplemental credentials:\n")
             creds.Print("  ")
     
     if grpdump == True:
-        sys.stdout.write("\nMember of:")
+        print("\nMember of:")
         if user.PrimaryGroupID != -1:
             for g in groups:
                 if g.SID.RID == user.PrimaryGroupID:
@@ -203,7 +202,7 @@ def processUser(user):
                            dsGetDSTimeStampStr(user.BadPwdTime), user.LogonCount, user.BadPwdCount, str_uac, str_anc,
                            str(user.DialInAccessPermission), g.Name, str(g.SID), "Y", ""
                            ])
-                    sys.stdout.write("\n\t%s (%s) (P)" % (g.Name, str(g.SID)))
+                    print("\n\t%s (%s) (P)" % (g.Name, str(g.SID)))
         grouplist = user.getMemberOf()
         for groupdata in grouplist:
             (groupid, deltime) = groupdata
@@ -211,7 +210,7 @@ def processUser(user):
             try:
                 group = dsGroup(db, groupid)
             except:
-                sys.stderr.write("\n[!] Unable to instantiate group object (record id: %d)" % groupid)
+                print("\n[!] Unable to instantiate group object (record id: %d)" % groupid)
                 continue
             if deltime == -1:
                 if csvoutfile != "":
@@ -223,7 +222,7 @@ def processUser(user):
                            dsGetDSTimeStampStr(user.BadPwdTime), user.LogonCount, user.BadPwdCount, str_uac, str_anc,
                            str(user.DialInAccessPermission), group.Name, str(group.SID), "N", ""
                            ])
-                sys.stdout.write("\n\t%s (%s)" % (group.Name, group.SID))
+                print("\n\t%s (%s)" % (group.Name, group.SID))
             else:
                 if csvoutfile != "":
                     write_csv([user.RecordId, user.Name, user.PrincipalName, user.SAMAccountName,
@@ -234,11 +233,10 @@ def processUser(user):
                            dsGetDSTimeStampStr(user.BadPwdTime), user.LogonCount, user.BadPwdCount, str_uac, str_anc,
                            str(user.DialInAccessPermission), group.Name, str(group.SID), "Y", dsGetDSTimeStampStr(dsConvertToDSTimeStamp(deltime))
                            ])
-                sys.stdout.write("\n\t%s (%s) - Deleted: %s" % (group.Name, group.SID, 
+                print("\n\t%s (%s) - Deleted: %s" % (group.Name, group.SID, 
                             dsGetDSTimeStampStr(dsConvertToDSTimeStamp(deltime))))
 
-    sys.stdout.write("\n")
-    sys.stdout.flush()
+    print("\n")
 
 if len(sys.argv) < 4:
     usage()
@@ -268,54 +266,54 @@ only_locked = False
 uac_flags = None
 
 
-sys.stderr.write("\n[+] Started at: %s" % time.strftime(
+print("\n[+] Started at: %s" % time.strftime(
                                         "%a, %d %b %Y %H:%M:%S UTC",
                                         time.gmtime()))
-sys.stderr.write("\n[+] Started with options:")
+print("\n[+] Started with options:")
 for opt in sys.argv:
 #     if opt == "--rid":
 #         if len(sys.argv) < optid + 2:
 #             usage()
 #             sys.exit(1)
 #         rid = int(sys.argv[optid + 1])
-#         sys.stderr.write("\n\t[-] User RID: %d" % rid)
+#         print("\n\t[-] User RID: %d" % rid)
     if opt == "--name":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         name = sys.argv[optid + 1]
         reName = re.compile(name)
-        sys.stderr.write("\n\t[-] User name: %s" % name)
+        print("\n\t[-] User name: %s" % name)
     if opt == "--active":
         if uac_flags != None:
-            sys.stderr.write("\n[!] Error! This option cannot be used with --uac!")
+            print("\n[!] Error! This option cannot be used with --uac!")
             sys.exit(1)
         only_active = True
-        sys.stderr.write("\n\t[-] Extracting only active accounts")
+        print("\n\t[-] Extracting only active accounts")
     if opt == "--locked":
         if uac_flags != None:
-            sys.stderr.write("\n[!] Error! This option cannot be used with --uac!")
+            print("\n[!] Error! This option cannot be used with --uac!")
             sys.exit(1)
         only_locked = True
-        sys.stderr.write("\n\t[-] Extracting only locked accounts")
+        print("\n\t[-] Extracting only locked accounts")
     if opt == "--uac":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         uac_flags = int(sys.argv[optid + 1], 16)
-        sys.stderr.write("\n\t[-] Extracting only accounts with UAC flags: " + sys.argv[optid + 1])
+        print("\n\t[-] Extracting only accounts with UAC flags: " + sys.argv[optid + 1])
     if opt == "--sid":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         sid = sys.argv[optid + 1]
-        sys.stderr.write("\n\t[-] User SID: %s" % sid)
+        print("\n\t[-] User SID: %s" % sid)
     if opt == "--guid":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         guid = sys.argv[optid + 1]
-        sys.stderr.write("\n\t[-] User GUID: %s" % guid)
+        print("\n\t[-] User GUID: %s" % guid)
     if opt == "--syshive":
         if len(sys.argv) < optid + 2:
             usage()
@@ -323,76 +321,73 @@ for opt in sys.argv:
         syshive = sys.argv[optid + 1]
     if opt == "--passwordhashes":
         pwdump = True
-        sys.stderr.write("\n\t[-] Extracting password hashes")
+        print("\n\t[-] Extracting password hashes")
     if opt == "--passwordhistory":
         pwhdump = True
-        sys.stderr.write("\n\t[-] Extracting password history")
+        print("\n\t[-] Extracting password history")
     if opt == "--certificates":
         certdump = True
-        sys.stderr.write("\n\t[-] Extracting certificates")
+        print("\n\t[-] Extracting certificates")
     if opt == "--supplcreds":
         suppcreddump = True
-        sys.stderr.write("\n\t[-] Extracting supplemental credentials")
+        print("\n\t[-] Extracting supplemental credentials")
     if opt == "--membership":
         grpdump = True
-        sys.stderr.write("\n\t[-] Extracting memberships")
+        print("\n\t[-] Extracting memberships")
     if opt == "--lmoutfile":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         lmoutfile = sys.argv[optid + 1]
-        sys.stderr.write("\n\t[-] LM hash output filename: " + sys.argv[optid + 1])
+        print("\n\t[-] LM hash output filename: " + sys.argv[optid + 1])
     if opt == "--ntoutfile":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         ntoutfile = sys.argv[optid + 1]
-        sys.stderr.write("\n\t[-] NT hash output filename: " + sys.argv[optid + 1])
+        print("\n\t[-] NT hash output filename: " + sys.argv[optid + 1])
     if opt == "--pwdformat":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         pwdformat = sys.argv[optid + 1]
-        sys.stderr.write("\n\t[-] Hash output format: " + sys.argv[optid + 1])
+        print("\n\t[-] Hash output format: " + sys.argv[optid + 1])
     if opt == "--csvoutfile":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         csvoutfile = sys.argv[optid + 1]
-        sys.stderr.write("\n\t[-] CSV output filename: " + sys.argv[optid + 1])
+        print("\n\t[-] CSV output filename: " + sys.argv[optid + 1])
     optid += 1
 
 if (pwdump or pwhdump) and syshive == "":
-    sys.stderr.write("\n[!] Error! syshive not specified!\n")
+    print("\n[!] Error! syshive not specified!\n")
     usage()
     sys.exit(1)
     
 if suppcreddump == True and syshive == "":
-    sys.stderr.write("\n[!] Error! syshive not specified!\n")
+    print("\n[!] Error! syshive not specified!\n")
     usage()
     sys.exit(1)
 
 # Setting up the environment
 if not checkfile(sys.argv[1]):
-    sys.stderr.write("\n[!] Error! datatable cannot be found!\n")
+    print("\n[!] Error! datatable cannot be found!\n")
     sys.exit(1)
 if not checkfile(sys.argv[2]):
-    sys.stderr.write("\n[!] Error! linktable cannot be found!\n")
+    print("\n[!] Error! linktable cannot be found!\n")
     sys.exit(1)
 wd = ensure_dir(sys.argv[3])
 
 if pwdump == True or pwhdump == True:
     if pwdformat == "":
-        sys.stderr.write("\n[!] Error! Missing password hash output format!\n")
-        sys.stderr.flush()
+        print("\n[!] Error! Missing password hash output format!\n")
         sys.exit(1)
     if ntoutfile == "":
-        sys.stderr.write("\n[!] Error! Missing password hash output file!\n")
-        sys.stderr.flush()
+        print("\n[!] Error! Missing password hash output file!\n")
         sys.exit(1)
     if (pwdformat == "john" or pwdformat == "ocl") and lmoutfile == "":
-        sys.stderr.write("\n[!] Error! Missing LM hash output file!\n")
-        sys.stderr.flush()
+        print("\n[!] Error! Missing LM hash output file!\n")
         sys.exit(1)
 
 if csvoutfile != "":
@@ -413,18 +408,18 @@ if pwdump or pwhdump or suppcreddump:
 utype = -1
 utype = dsGetTypeIdByTypeName(db, "Person")
 if utype == -1:
-    sys.stderr.write("\n[!] Unable to get type id for Person")
+    print("\n[!] Unable to get type id for Person")
     sys.exit(1)
 
 gtype = -1
 gtype = dsGetTypeIdByTypeName(db, "Group")
 if gtype == -1:
-    sys.stderr.write("\n[!] Unable to get type id for Group")
+    print("\n[!] Unable to get type id for Group")
     sys.exit(1)
 
 groups = []
 if grpdump == True:
-    sys.stderr.write("\n[+] Extracting group objects...")
+    print("\n[+] Extracting group objects...")
     for recordid in dsMapLineIdByRecordId:
         if int(dsGetRecordType(db, recordid)) == gtype:
             groups.append(dsGroup(db, recordid))
@@ -439,8 +434,8 @@ if csvoutfile != "":
             "Ancestors", "Dial-In Permission", "Member of", "Group SID", "Primary group", "Membership deletion time"
             ])
 
-sys.stdout.write("\nList of users:")
-sys.stdout.write("\n==============")
+print("\nList of users:")
+print("\n==============")
 
 if sid != "":
     recordid = int(dsMapRecordIdBySID[sid])
@@ -451,7 +446,7 @@ if sid != "":
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except:
-            sys.stderr.write("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
+            print("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
             sys.exit(1)
         
         if only_active == True:
@@ -471,7 +466,7 @@ elif guid !="":
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except:
-            sys.stderr.write("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
+            print("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
             sys.exit(1)
         
         if only_active == True:
@@ -490,7 +485,7 @@ else:
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except:
-            sys.stderr.write("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
+            print("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
             continue
             
         if reName != None and \

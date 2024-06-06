@@ -49,12 +49,12 @@ dsDatabaseSize = -1
 def dsInitDatabase(dsESEFile, workdir):
     global dsDatabaseSize
     dsDatabaseSize = stat(dsESEFile).st_size
-    sys.stderr.write("\n[+] Initialising engine...\n")
+    print("\n[+] Initialising engine...\n")
     db = open(dsESEFile, 'r')
     db.seek(0)
     line = db.readline()
     if line == "":
-        sys.stderr.write("[!] Warning! Error processing the first line!\n")
+        print("[!] Warning! Error processing the first line!\n")
         sys.exit(1)
     else:
         dsFieldNameRecord = line.split('\t')
@@ -188,7 +188,7 @@ def dsCheckMaps(dsDatabase, workdir):
         global dsMapRecordIdBySID
         global dsMapRecordIdByGUID
 
-        sys.stderr.write("[+] Loading saved map files (Stage 1)...\n")
+        print("[+] Loading saved map files (Stage 1)...\n")
         dsLoadMap(path.join(workdir, "offlid.map"), dsMapOffsetByLineId)
         dsLoadMap(path.join(workdir, "lidrid.map"), dsMapLineIdByRecordId)
         dsLoadMap(path.join(workdir, "ridname.map"), dsMapRecordIdByName)
@@ -204,8 +204,8 @@ def dsCheckMaps(dsDatabase, workdir):
         pek.close()
 
     except Exception as e:
-        sys.stderr.write("[!] Warning: Opening saved maps failed: " + str(e) + "\n")
-        sys.stderr.write("[+] Rebuilding maps...\n")
+        print("[!] Warning: Opening saved maps failed: " + str(e) + "\n")
+        print("[+] Rebuilding maps...\n")
         dsBuildMaps(dsDatabase, workdir)
         pass
 
@@ -222,15 +222,14 @@ def dsBuildMaps(dsDatabase, workdir):
 
     lineid = 0
     while True:
-        sys.stderr.write("\r[+] Scanning database - %d%% -> %d records processed" % (
+        print("\r[+] Scanning database - %d%% -> %d records processed" % (
             dsDatabase.tell() * 100 / dsDatabaseSize,
             lineid + 1
         ))
-        sys.stderr.flush()
         try:
             dsMapOffsetByLineId[lineid] = dsDatabase.tell()
         except:
-            sys.stderr.write("\n[!] Warning! Error at dsMapOffsetByLineId!\n")
+            print("\n[!] Warning! Error at dsMapOffsetByLineId!\n")
             pass
         # read the line and strip both DOS and UNIX newlines from it to prevent non-empty strings for rightmost column
         line = dsDatabase.readline().rstrip('\n').rstrip('\r')
@@ -245,13 +244,13 @@ def dsBuildMaps(dsDatabase, workdir):
             # ===================================================================
             if record[ntds.dsfielddictionary.dsPEKIndex] != "":
                 if ntds.dsfielddictionary.dsEncryptedPEK != "":
-                    sys.stderr.write("\n[!] Warning! Multiple records with PEK entry!\n")
+                    print("\n[!] Warning! Multiple records with PEK entry!\n")
                 ntds.dsfielddictionary.dsEncryptedPEK = record[ntds.dsfielddictionary.dsPEKIndex]
 
             try:
                 dsMapLineIdByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])] = lineid
             except:
-                sys.stderr.write("\n[!] Warning! Error at dsMapLineIdByRecordId!\n")
+                print("\n[!] Warning! Error at dsMapLineIdByRecordId!\n")
                 pass
 
             try:
@@ -261,7 +260,7 @@ def dsBuildMaps(dsDatabase, workdir):
                     if dsSchemaTypeId == -1 and record[ntds.dsfielddictionary.dsObjectTypeIdIndex] != "":
                         dsSchemaTypeId = int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])
                     else:
-                        sys.stderr.write(
+                        print(
                             "\n[!] Warning! There is more than one Schema object! The DB is inconsistent!\n")
             except:
                 dsMapRecordIdByName[record[ntds.dsfielddictionary.dsObjectName2Index]] = int(
@@ -270,7 +269,7 @@ def dsBuildMaps(dsDatabase, workdir):
                     if dsSchemaTypeId == -1 and record[ntds.dsfielddictionary.dsObjectTypeIdIndex] != "":
                         dsSchemaTypeId = int(record[ntds.dsfielddictionary.dsObjectTypeIdIndex])
                     else:
-                        sys.stderr.write(
+                        print(
                             "\n[!] Warning! There is more than one Schema object! The DB is inconsistent!\n")
                 pass
 
@@ -278,7 +277,7 @@ def dsBuildMaps(dsDatabase, workdir):
                 dsMapTypeByRecordId[int(record[ntds.dsfielddictionary.dsRecordIdIndex])] = record[
                     ntds.dsfielddictionary.dsObjectTypeIdIndex]
             except:
-                sys.stderr.write("\n[!] Warning! Error at dsMapTypeByRecordId!\n")
+                print("\n[!] Warning! Error at dsMapTypeByRecordId!\n")
                 pass
 
             try:
@@ -317,7 +316,7 @@ def dsBuildMaps(dsDatabase, workdir):
                     int(record[ntds.dsfielddictionary.dsRecordIdIndex]))
 
         lineid += 1
-    sys.stderr.write("\n")
+    print("\n")
 
     offlid = open(path.join(workdir, "offlid.map"), "wb")
     pickle.dump(dsMapOffsetByLineId, offlid)
@@ -366,15 +365,18 @@ def dsBuildTypeMap(dsDatabase, workdir):
 
     schemarecid = -1
 
-    sys.stderr.write("[+] Sanity checks...\n")
+    print("[+] Sanity checks...\n")
 
     if dsSchemaTypeId == -1:
-        sys.stderr.write("[!] Error! The Schema object's type id cannot be found! The DB is inconsistent!\n")
+        print("[!] Error! The Schema object's type id cannot be found! The DB is inconsistent!\n")
         sys.exit(1)
     elif len(dsMapRecordIdByTypeId[dsSchemaTypeId]) > 1:
-        sys.stderr.write("[!] Warning! There are more than 1 schema objects! The DB is inconsistent!\n")
-        sys.stderr.write("      Schema record ids: " + str(dsMapRecordIdByTypeId[dsSchemaTypeId]) + "\n")
-        # sys.stderr.write("      Please select the schema id you would like to use!\n")
+        # Always use the last id
+        schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][-1]
+        print("[!] Warning! There are more than 1 schema objects! The DB is inconsistent!\n")
+        print("      Schema record ids: " + str(dsMapRecordIdByTypeId[dsSchemaTypeId]) + "\n")
+        print("      Schema record id used: " + str(schemarecid) + "\n")
+        # print("      Please select the schema id you would like to use!\n")
         # tmp = eval(input())
         # while True:
         #     try:
@@ -382,33 +384,28 @@ def dsBuildTypeMap(dsDatabase, workdir):
         #             schemarecid = int(tmp)
         #             break
         #         else:
-        #             sys.stderr.write("      Please enter a number that is in the list of ids!\n")
+        #             print("      Please enter a number that is in the list of ids!\n")
         #             tmp = eval(input())
         #     except:
-        #         sys.stderr.write("      Please enter a number!\n")
+        #         print("      Please enter a number!\n")
         #         tmp = eval(input())
-
-        # Always use the last id
-        schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][-1]
     elif len(dsMapRecordIdByTypeId[dsSchemaTypeId]) == 0:
 
-       sys.stderr.write("[!] Warning! There is no schema object! The DB is inconsistent!\n")
+       print("[!] Warning! There is no schema object! The DB is inconsistent!\n")
     else:
         schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][0]
 
-    sys.stderr.write("      Schema record id: %d\n" % schemarecid)
-    sys.stderr.write("      Schema type id: %d\n" % int(dsMapTypeByRecordId[schemarecid]))
-    sys.stderr.flush()
+    print("      Schema record id: %d\n" % schemarecid)
+    print("      Schema type id: %d\n" % int(dsMapTypeByRecordId[schemarecid]))
 
     schemachilds = dsMapChildsByRecordId[schemarecid]
     i = 0
     l = len(schemachilds)
     for child in schemachilds:
-        sys.stderr.write("\r[+] Extracting schema information - %d%% -> %d records processed" % (
+        print("\r[+] Extracting schema information - %d%% -> %d records processed" % (
             i * 100 / l,
             i + 1
         ))
-        sys.stderr.flush()
         lineid = int(dsMapLineIdByRecordId[int(child)])
         offset = int(dsMapOffsetByLineId[int(lineid)])
         dsDatabase.seek(offset)
@@ -426,12 +423,11 @@ def dsBuildTypeMap(dsDatabase, workdir):
     pickle.dump(dsMapTypeIdByTypeName, typeidname)
     typeidname.close()
 
-    sys.stderr.write("\r[+] Extracting schema information - %d%% -> %d records processed" % (
+    print("\r[+] Extracting schema information - %d%% -> %d records processed" % (
         100,
         i
     ))
-    sys.stderr.write("\n")
-    sys.stderr.flush()
+    print("\n")
 
 
 def dsInitEncryption(syshive_fname):

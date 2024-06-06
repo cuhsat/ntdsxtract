@@ -33,7 +33,7 @@ def dsInitLinks(dsESEFile, workdir):
     dl.seek(0)
     line = dl.readline()
     if line == "":
-        sys.stderr.write("[-] Warning! Error processing the first line!\n")
+        print("[-] Warning! Error processing the first line!\n")
         sys.exit(1)
     else:
         ntds.dsfielddictionary.dsFieldNameRecord = line.split('\t')
@@ -57,13 +57,13 @@ def dsCheckMaps(dsDatabase, workdir):
         global dsMapLinks
         global dsMapBackwardLinks
 
-        sys.stderr.write("[+] Loading saved map files (Stage 2)...\n")
+        print("[+] Loading saved map files (Stage 2)...\n")
         dsLoadMap(path.join(workdir, "links.map"), dsMapLinks)
         dsLoadMap(path.join(workdir, "backlinks.map"), dsMapBackwardLinks)
         
     except Exception as e:
-        sys.stderr.write("[!] Warning: Opening saved maps failed: " + str(e) + "\n")
-        sys.stderr.write("[+] Rebuilding maps...\n")
+        print("[!] Warning: Opening saved maps failed: " + str(e) + "\n")
+        print("[+] Rebuilding maps...\n")
         dsBuildLinkMaps(dsDatabase, workdir)
         pass
 
@@ -71,8 +71,7 @@ def dsBuildLinkMaps(dsLinks, workdir):
     global dsMapLinks
     global dsMapBackwardLinks
     
-    sys.stderr.write("[+] Extracting object links...\n")
-    sys.stderr.flush()
+    print("[+] Extracting object links...\n")
     lineid = 0
     while True:
         line = dsLinks.readline()
