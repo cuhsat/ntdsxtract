@@ -8,7 +8,7 @@ from distutils.core import setup
 PACKAGE_NAME = "ntdsxtract"
 
 setup(name = PACKAGE_NAME,
-      version = "1.3.3.20150928",
+      version = "1.4.0",
       description = "Active Directory forensic framework",
       url = "http://www.ntdsxtract.com",
       author = "Csaba Barta",
@@ -21,6 +21,6 @@ setup(name = PACKAGE_NAME,
       packages = ['framework', 'framework.win32', 'ntds', 'ntds.lib'],
       scripts = ['dscomputers.py', 'dsdeletedobjects.py', 'dsfileinformation.py', 'dsgroups.py', 'dskeytab.py', 'dstimeline.py', 'dsusers.py'],
       data_files = [(os.path.join('share', 'doc', PACKAGE_NAME), ['README.md', 'LICENSE', 'release_notes.txt'])],
+      install_requires=['pycrypto'],
       requires=['libesedb'],
       )
-

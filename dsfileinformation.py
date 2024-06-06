@@ -47,15 +47,15 @@ header = f.read(8192)
 (pagesize, ) = unpack('I', header[236:240])
 (wmajorversion, ) = unpack('I', header[216:220])
 (wminorversion, ) = unpack('I', header[220:224])
-(wbuildnumber, )  = unpack('I', header[224:228])
-(wservicepack, )  = unpack('I', header[228:232])
+(wbuildnumber, ) = unpack('I', header[224:228])
+(wservicepack, ) = unpack('I', header[228:232])
 
-sys.stdout.write("Header checksum:     %s" % hexlify(header[:4][::-1]))
-sys.stdout.write("Signature:           %s" % hexlify(header[4:8][::-1]))
-sys.stdout.write("File format version: %s" % hexlify(header[8:12][::-1]))
-sys.stdout.write("File type:           %s" % hexlify(header[12:16][::-1]))
+sys.stdout.write("Header checksum:     %s" % header[:4][::-1].hex())
+sys.stdout.write("Signature:           %s" % header[4:8][::-1].hex())
+sys.stdout.write("File format version: %s" % header[8:12][::-1].hex())
+sys.stdout.write("File type:           %s" % header[12:16][::-1].hex())
 sys.stdout.write("Page size:           %d bytes" % pagesize)
-sys.stdout.write("DB time:             %s" % hexlify(header[16:24][::-1]))
+sys.stdout.write("DB time:             %s" % header[16:24][::-1].hex())
 sys.stdout.write("Windows version:     %d.%d (%d) Service pack %d" % (
                                                        wmajorversion,
                                                        wminorversion,
