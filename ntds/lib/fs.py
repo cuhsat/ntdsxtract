@@ -40,14 +40,7 @@ def checkdir(path):
 def ensure_dir(path):
     if (not checkdir(path)) and (not os.path.isfile(normalizepath(path))):
         try:
-            sys.stderr.write("\nThe directory (" + normalizepath(path) + ") specified does not exists!")
-            sys.stderr.write("\nWould you like to create it? [Y/N] ")
-            tmp = eval(input())
-            #sys.stderr.write("\n%s" % tmp)
-            if tmp.capitalize() == "Y":
-                os.makedirs(normalizepath(path))
-            else:
-                raise Exception("The directory cannot be created")
+            os.makedirs(normalizepath(path))
         except:
             raise Exception("The directory cannot be created")
     return normalizepath(path)
