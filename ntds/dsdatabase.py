@@ -50,7 +50,7 @@ def dsInitDatabase(dsESEFile, workdir):
     global dsDatabaseSize
     dsDatabaseSize = stat(dsESEFile).st_size
     sys.stderr.write("\n[+] Initialising engine...\n")
-    db = open(dsESEFile, 'rb', 0)
+    db = open(dsESEFile, 'r')
     db.seek(0)
     line = db.readline()
     if line == "":
