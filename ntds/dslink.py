@@ -25,7 +25,7 @@ from .lib.map import *
 import pickle
 from os import path
 
-dsMapLinks         = {}
+dsMapLinks = {}
 dsMapBackwardLinks = {}
 
 def dsInitLinks(dsESEFile, workdir):
@@ -33,7 +33,7 @@ def dsInitLinks(dsESEFile, workdir):
     dl.seek(0)
     line = dl.readline()
     if line == "":
-        print("[-] Warning! Error processing the first line!\n")
+        print("[-] Warning! Error processing the first line!")
         sys.exit(1)
     else:
         ntds.dsfielddictionary.dsFieldNameRecord = line.split('\t')
@@ -57,13 +57,13 @@ def dsCheckMaps(dsDatabase, workdir):
         global dsMapLinks
         global dsMapBackwardLinks
 
-        print("[+] Loading saved map files (Stage 2)...\n")
+        print("[+] Loading saved map files (Stage 2)...")
         dsLoadMap(path.join(workdir, "links.map"), dsMapLinks)
         dsLoadMap(path.join(workdir, "backlinks.map"), dsMapBackwardLinks)
         
     except Exception as e:
-        print("[!] Warning: Opening saved maps failed: " + str(e) + "\n")
-        print("[+] Rebuilding maps...\n")
+        print("[!] Warning: Opening saved maps failed: " + str(e))
+        print("[+] Rebuilding maps...")
         dsBuildLinkMaps(dsDatabase, workdir)
         pass
 
@@ -71,7 +71,7 @@ def dsBuildLinkMaps(dsLinks, workdir):
     global dsMapLinks
     global dsMapBackwardLinks
     
-    print("[+] Extracting object links...\n")
+    print("[+] Extracting object links...")
     lineid = 0
     while True:
         line = dsLinks.readline()

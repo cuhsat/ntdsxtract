@@ -32,25 +32,25 @@ import time
 from os import path
 
 if len(sys.argv) < 3 or len(sys.argv) > 6:
-    print("\nDSDeletedObjects v" + str(ntds.version.version))
-    print("\nExtracts information related to deleted objects")
-    print("\n\nusage: %s <datatable> <work directory> [option]" % sys.argv[0])
-    print("\n\n  datatable")
-    print("\n    The path to the file called datatable extracted by esedbexport")
-    print("\n  work directory")
-    print("\n    The path to the directory where ntdsxtract should store its")
-    print("\n    cache files and output files. If the directory does not exist")
-    print("\n    it will be created.")
-    print("\n  options:")
-    print("\n    --output <output file name>")
-    print("\n        The record containing the object and the preserved attributes will be")
-    print("\n        written to this file")
-    print("\n    --useIsDeleted")
-    print("\n        Extract deleted objects based on the IsDeleted flag")
-    print("\n    --debug")
-    print("\n        Turn on detailed error messages and stack trace")
-    print("\n\nFields of the main output")
-    print("\n    Rec. ID|Cr. time|Mod. time|Obj. name|Orig. container name\n")
+    print("DSDeletedObjects v" + str(ntds.version.version))
+    print("Extracts information related to deleted objects\n")
+    print("usage: %s <datatable> <work directory> [option]\n" % sys.argv[0])
+    print("  datatable")
+    print("    The path to the file called datatable extracted by esedbexport")
+    print("  work directory")
+    print("    The path to the directory where ntdsxtract should store its")
+    print("    cache files and output files. If the directory does not exist")
+    print("    it will be created.")
+    print("  options:")
+    print("    --output <output file name>")
+    print("        The record containing the object and the preserved attributes will be")
+    print("        written to this file")
+    print("    --useIsDeleted")
+    print("        Extract deleted objects based on the IsDeleted flag")
+    print("    --debug")
+    print("        Turn on detailed error messages and stack trace\n")
+    print("Fields of the main output")
+    print("    Rec. ID|Cr. time|Mod. time|Obj. name|Orig. container name")
     sys.exit(1)
 
 of = ""
@@ -67,21 +67,21 @@ for opt in sys.argv:
     optid += 1
 
 if not checkfile(sys.argv[1]):
-    print("\n[!] Error! datatable cannot be found!\n")
+    print("[!] Error! datatable cannot be found!")
     sys.exit(1)
 wd = ensure_dir(sys.argv[2])
 
-print("\n[+] Started at: %s" % time.strftime(
+print("[+] Started at: %s" % time.strftime(
                                         "%a, %d %b %Y %H:%M:%S UTC",
                                         time.gmtime()))
-print("\n[+] Started with options:")
-if useID == True:
-    print("\n\t[-] Using IsDeleted flag")
+print("[+] Started with options:")
+if useID is True:
+    print("\t[-] Using IsDeleted flag")
 else:
-    print("\n\t[-] Using Deleted Objects containers")
+    print("\t[-] Using Deleted Objects containers")
 if of != "":
-    print("\n\t[-] Output file: %s" % of)
-print("\n")
+    print("\t[-] Output file: %s" % of)
+print("")
 
     
 
@@ -99,7 +99,7 @@ if of != "":
 
 if useID == False:
     for recid in dsMapLineIdByRecordId:
-        print("\rExtracting deleted objects - %d%%" % (i*100/l))
+        print("Extracting deleted objects - %d%%" % (i*100/l))
 
         rec = dsGetRecordByLineId(db, dsMapLineIdByRecordId[recid])
         try:
@@ -110,7 +110,7 @@ if useID == False:
         except:
             pass
         i += 1
-    print("\n")
+    print("")
     
     if of != "":
         fdelobjs.writelines('\t'.join(ntds.dsfielddictionary.dsFieldNameRecord))
@@ -119,16 +119,16 @@ if useID == False:
         try:
             container = dsObject(db, crecid)
         except:
-            print("\n[!] Unable to instantiate container object (record id: %d)" % crecdid)
+            print("[!] Unable to instantiate container object (record id: %d)" % crecdid)
             continue
-        if container == None:
+        if container is None:
             continue
         childs = container.getChilds()
         for did in childs:
             try:
                 dobj = dsObject(db, did)
             except:
-                print("\n[!] Unable to instantiate object (record id: %d)" % did)
+                print("[!] Unable to instantiate object (record id: %d)" % did)
                 continue
             if dobj == None:
                 continue
@@ -145,7 +145,7 @@ if useID == False:
                                 )[ntds.dsfielddictionary.dsObjectName2Index]
             
             print(
-                             "%d|%s|%s|%s|%s\n" % (
+                             "%d|%s|%s|%s|%s" % (
                                            dobj.RecordId,
                                            dsGetDSTimeStampStr(dobj.WhenCreated),
                                            dsGetDSTimeStampStr(dobj.WhenChanged),
@@ -158,7 +158,7 @@ if useID == False:
                 
 if useID == True:
     for recid in dsMapLineIdByRecordId:
-        print("\rExtracting deleted objects - %d%%" % (i*100/l))
+        print("Extracting deleted objects - %d%%" % (i*100/l))
 
         rec = dsGetRecordByLineId(db, dsMapLineIdByRecordId[recid])
         try:
@@ -167,7 +167,7 @@ if useID == True:
         except:
             pass
         i += 1
-    print("\n")
+    print("")
     
     if of != "":
         fdelobjs.writelines('\t'.join(ntds.dsfielddictionary.dsFieldNameRecord))
@@ -176,9 +176,9 @@ if useID == True:
         try:
             dobj = dsObject(db, did)
         except:
-            print("\n[!] Unable to instantiate object (record id: %d)" % did)
+            print("[!] Unable to instantiate object (record id: %d)" % did)
             continue
-        if dobj == None:
+        if dobj is None:
             continue
         
         origcname = ""
@@ -193,7 +193,7 @@ if useID == True:
                             )[ntds.dsfielddictionary.dsObjectName2Index]
         
         print(
-                         "\n%d|%s|%s|%s|%s" % (
+                         "%d|%s|%s|%s|%s" % (
                                        dobj.RecordId,
                                        dsGetDSTimeStampStr(dobj.WhenCreated),
                                        dsGetDSTimeStampStr(dobj.WhenChanged),
@@ -207,4 +207,4 @@ if useID == True:
 if of != "":
     fdelobjs.close()
 
-print("\n")
+print("")

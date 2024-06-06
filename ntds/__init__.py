@@ -28,7 +28,7 @@ for arg in sys.argv:
         debug = True
 
 def simple_exception(type, value, traceback):
-    print("[!] Error!" + str(value) + "\n")
+    print("[!] Error!" + str(value))
     sys.exit(1)
 
 if debug == False:

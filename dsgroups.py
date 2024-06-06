@@ -32,39 +32,39 @@ from ntds.lib.csvoutput import *
 
 
 def usage():
-    print("\nDSGroups v" + str(ntds.version.version))
-    print("\nExtracts information related to group objects\n")
-    print("\nusage: %s <datatable> <linktable> <work directory> [option]" % sys.argv[0])
-    print("\n\n  datatable")
-    print("\n    The path to the file called datatable extracted by esedbexport")
-    print("\n  linktable")
-    print("\n    The path to the file called linktable extracted by esedbexport")
-    print("\n  work directory")
-    print("\n    The path to the directory where ntdsxtract should store its")
-    print("\n    cache files and output files. If the directory does not exist")
-    print("\n    it will be created.")
-    print("\n\n  options:")
-    print("\n    --rid <group rid>")
-    print("\n          Extracts only the group identified by <group id>")
-    print("\n    --name <group name regexp>")
-    print("\n          Extracts only the group identified by the regular expression")
-    print("\n    --members")
-    print("\n          Extracts the members of the group")
-    print("\n    --csvoutfile <name of the CSV output file>")
-    print("\n          The filename of the csv file to which ntdsxtract should write the")
-    print("\n          output")
-    print("\n    --debug")
-    print("\n          Turn on detailed error messages and stack trace")
-    print("\n")
+    print("DSGroups v" + str(ntds.version.version))
+    print("Extracts information related to group objects")
+    print("usage: %s <datatable> <linktable> <work directory> [option]\n" % sys.argv[0])
+    print("  datatable")
+    print("    The path to the file called datatable extracted by esedbexport")
+    print("  linktable")
+    print("    The path to the file called linktable extracted by esedbexport")
+    print("  work directory")
+    print("    The path to the directory where ntdsxtract should store its")
+    print("    cache files and output files. If the directory does not exist")
+    print("    it will be created.\n")
+    print("  options:")
+    print("    --rid <group rid>")
+    print("          Extracts only the group identified by <group id>")
+    print("    --name <group name regexp>")
+    print("          Extracts only the group identified by the regular expression")
+    print("    --members")
+    print("          Extracts the members of the group")
+    print("    --csvoutfile <name of the CSV output file>")
+    print("          The filename of the csv file to which ntdsxtract should write the")
+    print("          output")
+    print("    --debug")
+    print("          Turn on detailed error messages and stack trace\n")
+
 
 if len(sys.argv) < 4:
     usage()
     sys.exit(1)
 
-print("\n[+] Started at: %s" % time.strftime(
+print("[+] Started at: %s" % time.strftime(
                                         "%a, %d %b %Y %H:%M:%S UTC",
                                         time.gmtime()))
-print("\n[+] Started with options:")
+print("[+] Started with options:")
 optid = 0
 rid = ""
 name = ""
@@ -79,32 +79,32 @@ for opt in sys.argv:
             usage()
             sys.exit(1)
         rid = int(sys.argv[optid + 1])
-        print("\n\t[-] Group RID: %d" % rid)
+        print("\t[-] Group RID: %d" % rid)
     if opt == "--name":
         if len(sys.argv) < 5:
             usage()
             sys.exit(1)
         name = sys.argv[optid + 1]
         reName = re.compile(name)
-        print("\n\t[-] Group name: %s" % name)
+        print("\t[-] Group name: %s" % name)
     if opt == "--members":
         grpdump = True
-        print("\n\t[-] Extracting group members")
+        print("\t[-] Extracting group members")
     if opt == "--csvoutfile":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         csvoutfile = sys.argv[optid + 1]
-        print("\n\t[-] CSV output filename: " + sys.argv[optid + 1])
+        print("\t[-] CSV output filename: " + sys.argv[optid + 1])
     optid += 1
-print("\n")
+print("")
 
 # Setting up the environment
 if not checkfile(sys.argv[1]):
-    print("\n[!] Error! datatable cannot be found!\n")
+    print("[!] Error! datatable cannot be found!")
     sys.exit(1)
 if not checkfile(sys.argv[2]):
-    print("\n[!] Error! linktable cannot be found!\n")
+    print("[!] Error! linktable cannot be found!")
     sys.exit(1)
 wd = ensure_dir(sys.argv[3])
 
@@ -120,15 +120,15 @@ utype = dsGetTypeIdByTypeName(db, "Person")
 ctype = dsGetTypeIdByTypeName(db, "Computer")
 
 users = []
-if grpdump == True:
-    print("\n[+] Extracting user objects...")
+if grpdump is True:
+    print("[+] Extracting user objects...")
     for recordid in dsMapLineIdByRecordId:
         if (int(dsGetRecordType(db, recordid)) == utype or
             int(dsGetRecordType(db, recordid)) == ctype):
             try:
                 user = dsUser(db, recordid)
             except:
-                print("\n[!] Unable to instantiate user object (record id: %d)" % recordid)
+                print("[!] Unable to instantiate user object (record id: %d)" % recordid)
                 continue
             users.append(user)
             user = None
@@ -140,14 +140,14 @@ if csvoutfile != "":
                "Membership deletion time"
             ])
         
-print("\n\nList of groups:")
-print("\n===============")
+print("List of groups:")
+print("===============")
 for recordid in dsMapLineIdByRecordId:
     if int(dsGetRecordType(db, recordid)) == gtype:
         try:
             group = dsGroup(db, recordid)
         except:
-            print("\n[!] Unable to instantiate group object (record id: %d)" % recordid)
+            print("[!] Unable to instantiate group object (record id: %d)" % recordid)
             continue
         if rid != "" and group.SID.RID != int(rid):
             group = None
@@ -156,22 +156,22 @@ for recordid in dsMapLineIdByRecordId:
             group = None
             continue
         
-        print("\nRecord ID:    %d" % group.RecordId)
-        print("\nGroup Name:   %s" % group.Name)
-        print("\nGUID:         %s" % str(group.GUID))
-        print("\nSID:          %s" % str(group.SID))
-        print("\nWhen created: %s" % dsGetDSTimeStampStr(group.WhenCreated))
-        print("\nWhen changed: %s" % dsGetDSTimeStampStr(group.WhenChanged))
+        print("Record ID:    %d" % group.RecordId)
+        print("Group Name:   %s" % group.Name)
+        print("GUID:         %s" % str(group.GUID))
+        print("SID:          %s" % str(group.SID))
+        print("When created: %s" % dsGetDSTimeStampStr(group.WhenCreated))
+        print("When changed: %s" % dsGetDSTimeStampStr(group.WhenChanged))
         
         # The main group record
         if csvoutfile != "":
             write_csv([group.RecordId, group.Name, str(group.GUID),
                 str(group.SID), "'" + dsGetDSTimeStampStr(group.WhenCreated),
                 "'" + dsGetDSTimeStampStr(group.WhenChanged),
-                "", "", "" ])
+                "", "", ""])
         
-        if grpdump == True:
-            print("\nMembers:")
+        if grpdump is True:
+            print("Members:")
             for u in users:
                 if u.PrimaryGroupID != -1:
                     if u.PrimaryGroupID == group.SID.RID:
@@ -181,7 +181,7 @@ for recordid in dsMapLineIdByRecordId:
                                     "=\"" + dsGetDSTimeStampStr(group.WhenChanged) + "\"",
                                     u.Name, u.SAMAccountName, str(u.GUID), u.Type, "Y", ""
                                     ])
-                        print("\n\t%s (%s) (%s) (P)" % (u.Name, str(u.GUID), u.Type))
+                        print("\t%s (%s) (%s) (P)" % (u.Name, str(u.GUID), u.Type))
             memberlist = group.getMembers()
             for memberdata in memberlist:
                 (memberid, deltime) = memberdata
@@ -189,7 +189,7 @@ for recordid in dsMapLineIdByRecordId:
                     member = dsAccount(db, memberid)
                 except:
                     continue
-                if member == None:
+                if member is None:
                     continue
                 if deltime == -1:
                     if csvoutfile != "":
@@ -198,7 +198,7 @@ for recordid in dsMapLineIdByRecordId:
                             "=\"" + dsGetDSTimeStampStr(group.WhenChanged) + "\"",
                             member.Name, member.SAMAccountName, str(member.GUID), member.Type, "N", ""
                             ])
-                    print("\n\t%s (%s) (%s)" % (member.Name, str(member.GUID), member.Type))
+                    print("\t%s (%s) (%s)" % (member.Name, str(member.GUID), member.Type))
                 else:
                     if csvoutfile != "":
                         write_csv([group.RecordId, group.Name, str(group.GUID),
@@ -206,14 +206,14 @@ for recordid in dsMapLineIdByRecordId:
                             "=\"" + dsGetDSTimeStampStr(group.WhenChanged) + "\"",
                             member.Name, member.SAMAccountName, str(member.GUID), member.Type, "N", "=\"" + dsGetDSTimeStampStr(dsConvertToDSTimeStamp(deltime)) + "\""
                             ])
-                    print("\n\t%s (%s) (%s) - Deleted: %s" % (member.Name, 
+                    print("\t%s (%s) (%s) - Deleted: %s" % (member.Name,
                                                                          str(member.GUID), 
                                                                          member.Type, 
                                                                          dsGetDSTimeStampStr(dsConvertToDSTimeStamp(deltime))))
                 member = None
         
         group = None
-        print("\n")
+        print("")
 
 if csvoutfile != "":
     close_csv()

@@ -29,15 +29,15 @@ from ntds.lib.dump import *
 import time
 
 if len(sys.argv) < 2:
-    print("\nDSFileInformation v" + str(ntds.version.version))
-    print("\nExtracts information related to the NTDS.DIT database file")
-    print("\n\nusage: %s <ntds.dit>\n" % sys.argv[0])
-    print("\n\n  options:")
-    print("\n    --debug")
-    print("\n          Turn on detailed error messages and stack trace")
+    print("DSFileInformation v" + str(ntds.version.version))
+    print("Extracts information related to the NTDS.DIT database file\n")
+    print("usage: %s <ntds.dit>\n" % sys.argv[0])
+    print("  options:\n")
+    print("    --debug")
+    print("          Turn on detailed error messages and stack trace")
     sys.exit(1)
 
-print("\n[+] Started at: %s" % time.strftime(
+print("[+] Started at: %s" % time.strftime(
                                         "%a, %d %b %Y %H:%M:%S UTC",
                                         time.gmtime()))
 

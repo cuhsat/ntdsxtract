@@ -30,13 +30,12 @@ from framework.win32.rawreg import get_root, open_key
 from ntds.lib.fs import *
 
 def usage():
-    print("\nDSKeytab v" + str(ntds.version.version))
-    print("\nGenerate keytab file")
-    print("\n\nusage: {0} <datatable> <linktable> <system hive> <work directory> <keytab>".format(sys.argv[0]))
-    print("\n\n  options:")
-    print("\n    --debug")
-    print("\n          Turn on detailed error messages and stack trace")
-    print("\n")
+    print("DSKeytab v" + str(ntds.version.version))
+    print("Generate keytab file\n")
+    print("usage: {0} <datatable> <linktable> <system hive> <work directory> <keytab>\n".format(sys.argv[0]))
+    print("  options:")
+    print("    --debug")
+    print("          Turn on detailed error messages and stack trace\n")
 
 if len(sys.argv) < 6:
     usage()
@@ -44,10 +43,10 @@ if len(sys.argv) < 6:
 
 # Setting up the environment
 if not checkfile(sys.argv[1]):
-    print("\n[!] Error! datatable cannot be found!\n")
+    print("[!] Error! datatable cannot be found!")
     sys.exit(1)
 if not checkfile(sys.argv[2]):
-    print("\n[!] Error! linktable cannot be found!\n")
+    print("[!] Error! linktable cannot be found!")
     sys.exit(1)
 wd = ensure_dir(sys.argv[4])
 
@@ -134,30 +133,30 @@ def dsAddPrincipalEntries(principal, keytabFile):
             realm = defaultRealm
     SAMAccountName = principal.SAMAccountName
     if SAMAccountName == "":
-        print("SAM account name is blank. Skipping principal.\n")
+        print("SAM account name is blank. Skipping principal.")
         return
     if realm == "":
-        print("Realm is blank. Skipping principal {0}.\n".format(SAMAccountName))
+        print("Realm is blank. Skipping principal {0}.".format(SAMAccountName))
         return
     print("Processing principal {0}.\n".format(SAMAccountName))
     timestamp = dsGetPOSIXTimeStamp(principal.PasswordLastSet)
     nameType = 1 # KRB5_NT_PRINCIPAL
     kerberosKeys = dsGetPrincipalKerberosKeys(principal)
     if kerberosKeys != None:
-        print("Using supplemental credentials.\n")
+        print("Using supplemental credentials.")
         dsPrincipalKeytabFromSupplementalCredentials(kerberosKeys, realm, SAMAccountName, nameType, timestamp)
         return
     (lmhistory, nthistory) = principal.getPasswordHistory()
     if nthistory != None and len(nthistory) > 0:
-        print("Using NT history.\n")
+        print("Using NT history.")
         dsPrincipalKeytabFromNTHistory(nthistory, realm, SAMAccountName, nameType, timestamp)
         return
     (lm, nt) = principal.getPasswordHashes()
     if nt != "":
-        print("Using NT hash.\n")
+        print("Using NT hash.")
         dsPrincipalKeytabFromNTHash(nt, realm, SAMAccountName, nameType, timestamp)
         return
-    print("No information about kerberos keys.\n")
+    print("No information about kerberos keys.")
 
 def dsGetPrincipalKerberosKeys(principal):
     creds = principal.getSupplementalCredentials()
@@ -234,18 +233,18 @@ def dsPackKeytabEntry(realm, SAMAccountName, nameType, timestamp, keyVersionNumb
 utype = -1
 utype = dsGetTypeIdByTypeName(db, "Person")
 if utype == -1:
-    print("Unable to get type id for Person\n")
+    print("Unable to get type id for Person")
     sys.exit(1)
 
 ctype = -1
 ctype = dsGetTypeIdByTypeName(db, "Computer")
 if ctype == -1:
-    print("Unable to get type id for Computer\n")
+    print("Unable to get type id for Computer")
     sys.exit(1)
 
 defaultRealm = dsGetMachineDomain()
-if defaultRealm == None:
-    print("Default realm is not detected\n")
+if defaultRealm is None:
+    print("Default realm is not detected")
     exit(0)
 #print "default realm:", defaultRealm, type(defaultRealm)
 

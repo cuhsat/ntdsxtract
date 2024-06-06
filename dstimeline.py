@@ -34,34 +34,33 @@ times = []
 timeline = []
 
 def usage():
-    print("\nDSTimeline v" + str(ntds.version.version))
-    print("\nConstructs timeline")
-    print("\n\nusage: %s <datatable> <work directory> [option]" % sys.argv[0])
-    print("\n\n  datatable")
-    print("\n    The full path to the file called datatable extracted by esedbexport")
-    print("\n  work directory")
-    print("\n    The full path to the directory where ntdsxtract should store its")
-    print("\n    cache files and output files. If the directory does not exist")
-    print("\n    it will be created.")
-    print("\n  options:")
-    print("\n    --b")
-    print("\n       Output timeline in mactime body format.")
-    print("\n    --csv")
-    print("\n       Output timeline in CSV format.")
-    print("\n    --outfile <name of the output file>")
-    print("\n          The filename of the output file to which ntdsxtract should write the")
-    print("\n          output")
-    print("\n    --debug")
-    print("\n       Turn on detailed error messages and stack trace")
-    print("\n\nFields of the default output")
-    print("\n    Timestamp|Action|Record ID|Obj. name|Obj. type")
-    print("\n")
+    print("DSTimeline v" + str(ntds.version.version))
+    print("Constructs timeline")
+    print("usage: %s <datatable> <work directory> [option]\n" % sys.argv[0])
+    print("  datatable")
+    print("    The full path to the file called datatable extracted by esedbexport")
+    print("  work directory")
+    print("    The full path to the directory where ntdsxtract should store its")
+    print("    cache files and output files. If the directory does not exist")
+    print("    it will be created.")
+    print("  options:")
+    print("    --b")
+    print("       Output timeline in mactime body format.")
+    print("    --csv")
+    print("       Output timeline in CSV format.")
+    print("    --outfile <name of the output file>")
+    print("          The filename of the output file to which ntdsxtract should write the")
+    print("          output")
+    print("    --debug")
+    print("       Turn on detailed error messages and stack trace\n")
+    print("Fields of the default output")
+    print("    Timestamp|Action|Record ID|Obj. name|Obj. type\n")
 
 if len(sys.argv) < 2:
     usage()
     sys.exit(1)
 
-print("\n[+] Started at: %s" % time.strftime(
+print("[+] Started at: %s" % time.strftime(
                                         "%a, %d %b %Y %H:%M:%S UTC",
                                         time.gmtime()))
 
@@ -69,32 +68,32 @@ bodyformat = False
 csvformat = False
 outfile = ""
 
-print("\n[+] Started with options:")
+print("[+] Started with options:")
 optid = 0
 for opt in sys.argv:
     if opt == "--b":
-        if csvformat == True:
-            print("\n[!] Error! CSV and body format cannot be defined at the same time!\n")
+        if csvformat is True:
+            print("[!] Error! CSV and body format cannot be defined at the same time!")
             sys.exit(1)
         bodyformat = True
-        print("\n\t[-] Using mactime body format")
+        print("\t[-] Using mactime body format")
     if opt == "--csv":
-        if bodyformat == True:
-            print("\n[!] Error! CSV and body format cannot be defined at the same time!\n")
+        if bodyformat is True:
+            print("[!] Error! CSV and body format cannot be defined at the same time!")
             sys.exit(1)
         csvformat = True
-        print("\n\t[-] Using CSV format")
+        print("\t[-] Using CSV format")
     if opt == "--outfile":
         if len(sys.argv) < optid + 2:
             usage()
             sys.exit(1)
         outfile = sys.argv[optid + 1]
-        print("\n\t[-] Output filename: " + sys.argv[optid + 1])
+        print("\t[-] Output filename: " + sys.argv[optid + 1])
     optid += 1
 
 # Check the datatable
 if not checkfile(sys.argv[1]):
-    print("\n[!] Error! datatable cannot be found!\n")
+    print("[!] Error! datatable cannot be found!")
     sys.exit(1)
 
 # Check the workdir
@@ -108,7 +107,7 @@ if outfile != "" and csvformat == True:
             ])
 
 bof = None
-if outfile != "" and bodyformat == True:
+if outfile != "" and bodyformat is True:
     bof = open(path.join(wd, outfile), "wb")
 
 # Initialize engine
@@ -117,7 +116,7 @@ db = dsInitDatabase(sys.argv[1], wd)
 i = 0
 l = len(dsMapLineIdByRecordId)
 for recordid in dsMapLineIdByRecordId:
-    print("\r[+] Building timeline - %d%% -> %d records processed" % (
+    print("[+] Building timeline - %d%% -> %d records processed" % (
                                                                            i*100/l,
                                                                            i
                                                                            ))
@@ -197,14 +196,14 @@ for recordid in dsMapLineIdByRecordId:
                               ))
             user = None
     i += 1
-print("\n")
+print("")
         
 timeline = sorted(times, key=itemgetter(1))
 for item in timeline:
     if bodyformat == True:
         (id, ctimestamp, mtimestamp, name, type, actiontype) = item
         if actiontype != "":
-            print("\n0|%s (%s) - (%s)|%d||0|0|0|0|%d|0|%d" % (
+            print("0|%s (%s) - (%s)|%d||0|0|0|0|%d|0|%d" % (
                                                      name, 
                                                      type,
                                                      actiontype, 
@@ -222,7 +221,7 @@ for item in timeline:
                                                      dsGetPOSIXTimeStamp(ctimestamp)
                                                      ))
         else:
-            print("\n0|%s (%s)|%d||0|0|0|0|%d|0|%d" % (
+            print("0|%s (%s)|%d||0|0|0|0|%d|0|%d" % (
                                                      name, 
                                                      type, 
                                                      id,
@@ -239,7 +238,7 @@ for item in timeline:
                                                      ))
     if csvformat == True:
         (id, timestamp, action, name, type) = item
-        print("\n%s|%s|%d|%s (%s)" % (
+        print("%s|%s|%d|%s (%s)" % (
                                        dsGetDSTimeStampStr(timestamp),
                                        action,
                                        id,
@@ -251,4 +250,4 @@ for item in timeline:
                        type
                 ])
         
-print("\n")
+print("")
