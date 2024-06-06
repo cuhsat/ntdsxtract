@@ -22,17 +22,18 @@
 # Original hex dump code from
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/142812
 
+
 def dump(src, length=8, indent=0):
-    FILTER=''.join([(len(repr(chr(x)))==3) and chr(x) or '.' for x in range(256)])
-    N=0; result=''
+    f = ''.join([(len(repr(chr(x))) == 3) and chr(x) or '.' for x in range(256)])
+    n, result = 0, ''
     while src:
-        s,src = src[:length],src[length:]
-        hexa = ' '.join(["%02X"%ord(x) for x in s])
-        s = s.translate(FILTER)
+        s, src = src[:length], src[length:]
+        hexa = ' '.join(["%02X" % x for x in s])
+        s = s.translate(f)
         istr = ""
         if indent > 0:
             for i in range(indent):
                 istr += " "
-        result += istr + "%04X   %-*s   %s\n" % (N, length*3, hexa, s)
-        N+=length
+        result += istr + "%04X   %-*s   %s\n" % (n, length*3, hexa, s)
+        n += length
     return result

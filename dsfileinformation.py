@@ -37,10 +37,6 @@ if len(sys.argv) < 2:
     print("          Turn on detailed error messages and stack trace")
     sys.exit(1)
 
-print("[+] Started at: %s" % time.strftime(
-                                        "%a, %d %b %Y %H:%M:%S UTC",
-                                        time.gmtime()))
-
 f = open(sys.argv[1], "rb", 0)
 header = f.read(8192)
 
