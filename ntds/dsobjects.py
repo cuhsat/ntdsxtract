@@ -609,7 +609,7 @@ class dsSupplCredentials:
             self.Packages = unhexlify(text[offset:offset+ValueLength]).decode('utf-16').split("\x00")
         elif Name == u"Primary:CLEARTEXT":
             try:
-                self.Password = unicode(unhexlify(text[offset:offset+ValueLength]).decode('utf-16')).encode('utf8')
+                self.Password = unhexlify(text[offset:offset+ValueLength]).decode('utf-16').encode('utf8')
             except:
                 self.Password = dump(unhexlify(text[offset:offset+ValueLength]),16,16)
         else:
