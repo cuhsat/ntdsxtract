@@ -374,21 +374,25 @@ def dsBuildTypeMap(dsDatabase, workdir):
     elif len(dsMapRecordIdByTypeId[dsSchemaTypeId]) > 1:
         sys.stderr.write("[!] Warning! There are more than 1 schema objects! The DB is inconsistent!\n")
         sys.stderr.write("      Schema record ids: " + str(dsMapRecordIdByTypeId[dsSchemaTypeId]) + "\n")
-        sys.stderr.write("      Please select the schema id you would like to use!\n")
-        tmp = eval(input())
-        while True:
-            try:
-                if int(tmp) in dsMapRecordIdByTypeId[dsSchemaTypeId]:
-                    schemarecid = int(tmp)
-                    break
-                else:
-                    sys.stderr.write("      Please enter a number that is in the list of ids!\n")
-                    tmp = eval(input())
-            except:
-                sys.stderr.write("      Please enter a number!\n")
-                tmp = eval(input())
+        # sys.stderr.write("      Please select the schema id you would like to use!\n")
+        # tmp = eval(input())
+        # while True:
+        #     try:
+        #         if int(tmp) in dsMapRecordIdByTypeId[dsSchemaTypeId]:
+        #             schemarecid = int(tmp)
+        #             break
+        #         else:
+        #             sys.stderr.write("      Please enter a number that is in the list of ids!\n")
+        #             tmp = eval(input())
+        #     except:
+        #         sys.stderr.write("      Please enter a number!\n")
+        #         tmp = eval(input())
+
+        # Always use the last id
+        schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][-1]
     elif len(dsMapRecordIdByTypeId[dsSchemaTypeId]) == 0:
-        sys.stderr.write("[!] Warning! There is no schema object! The DB is inconsistent!\n")
+
+       sys.stderr.write("[!] Warning! There is no schema object! The DB is inconsistent!\n")
     else:
         schemarecid = dsMapRecordIdByTypeId[dsSchemaTypeId][0]
 
