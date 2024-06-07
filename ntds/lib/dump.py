@@ -24,12 +24,13 @@
 
 
 def dump(src, length=8, indent=0):
-    f = ''.join([(len(repr(chr(x))) == 3) and chr(x) or '.' for x in range(256)])
+    f = bytes([(len(repr(chr(x))) == 3) and x or ord('.') for x in range(256)])
     n, result = 0, ''
     while src:
-        s, src = src[:length], src[length:]
-        hexa = ' '.join(["%02X" % x for x in s])
-        s = s.translate(f)
+        b, src = src[:length], src[length:]
+        hexa = ' '.join(["%02X" % x for x in b])
+        b = b.translate(f)
+        s = b.decode("unicode_escape")
         istr = ""
         if indent > 0:
             for i in range(indent):
